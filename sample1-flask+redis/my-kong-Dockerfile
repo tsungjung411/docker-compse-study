@@ -1,0 +1,14 @@
+# 為了安裝 net 相關工具：ping, nslookup, ifconfig
+FROM kong:3.5.0
+
+USER root
+RUN apt update
+
+# iputils-ping for: ping my-web
+# dnsutils for: nslookup my-web
+# net-tools for: ifconfig
+RUN apt install -y iputils-ping curl dnsutils net-tools nano
+
+#RUN echo "192.168.96.3 my-web" >> /etc/hosts
+
+USER kong

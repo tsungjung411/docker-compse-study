@@ -1,0 +1,13 @@
+_format_version: "3.0"
+_transform: true
+
+services:
+- name: my-web-service
+  host: my-web
+  port: 80
+  protocol: http
+  routes:
+  - name: my-web-route
+    paths:
+    - /
+    strip_path: false

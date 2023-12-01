@@ -1,0 +1,42 @@
+services:
+
+  my-redis:
+    image: "redis:alpine"
+
+  my-web:
+    build:
+      context: .
+      dockerfile: my-web-Dockerfile
+    ports:
+    - "8080:80"
+    volumes:
+    - ./app:/app
+
+  my-kong:
+    build:
+      context: .
+      dockerfile: my-kong-Dockerfile
+    depends_on:
+      - my-redis
+      - my-web
+    restart: always
+    ports:
+    - "80:80"
+    - "81:81"
+    - "82:82"
+    environment:
+      KONG_DATABASE: off
+      KONG_DECLARATIVE_CONFIG: /kong/declarative/kong.yml
+      KONG_PROXY_LISTEN: 0.0.0.0:80
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_LISTEN: 0.0.0.0:81
+      KONG_ADMIN_GUI_URL: http://localhost:82
+    volumes:
+      - ./kong:/kong/declarative/
+      # - ./kong/kong.conf:/etc/kong/kong.conf.default  # [debug] 調整 kong 參數
+
+
+

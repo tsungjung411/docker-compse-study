@@ -1,0 +1,5 @@
+# 為了安裝套件：redis for python，不用每次重啟 docker-compose 都要重新安裝一次
+
+FROM tiangolo/uwsgi-nginx-flask:python3.8
+
+RUN apt update && pip install redis
